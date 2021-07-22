@@ -6,7 +6,7 @@
 
 - 점층적 생성자 패턴(telescoping constructor pattern)을 사용해서 해결할 수 있지만, 매개변수 개수가 더 늘어나면 클라이언트 코드를 작성하거나 가독성이 떨어진다는 한계가 있음
 
-  - ex) 원하는 매개변수를 모두 포함한 생성자 중에서 가장 짧은 것을 선택해야
+  - ex) 원하는 매개변수를 모두 포함한 생성자 중에서 가장 짧은 것을 선택해야함
     - `Nutritionfacts cocaCola = new NutritionFacts(240, 8, 100, 0, 35, 27);`
 
   ```java
