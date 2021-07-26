@@ -55,7 +55,7 @@
   - 자원의 소유자가 `close` 메서드를 호출하지 않는 것에 대비한 안전망 역할
     - `cleaner` 나 `finalizer` 가 즉시 호출되리란 보장은 없지만, 클라이언트가 하지 않은 자원 회수를 늦게라도 해주는 것이 더 좋음
     - 안전망 역할의 `finalizer` 를 작성할 때는 값어치가 있는지 심사숙고할 것
-  - ex) `FileInputStream`, `FileOutputStream`, `ThreadPoolExecutor`
+    - ex) `FileInputStream`, `FileOutputStream`, `ThreadPoolExecutor`
   - 네이티브 피어(native peer)와 연결된 객체
     - 네이티브 피어: 일반 자바 객체가 네이티브 메서드를 통해 기능을 위임한 네이티브 객체를 의미
     - 네이티브 피어는 Java 객체가 아니므로 GC는 존재를 알지 못함
