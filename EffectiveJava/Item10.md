@@ -386,7 +386,7 @@ public final class PhoneNumber {
     }
     ```
 
-- `equals` 를 테스트할 때 'AutoValue' 프레임워크를 활요하면 좋음
+- `equals` 를 테스트할 때 'AutoValue' 프레임워크를 활용하면 좋음
 
 ## 정리
 
