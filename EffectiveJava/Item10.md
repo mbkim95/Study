@@ -324,11 +324,69 @@ public boolean equals(Object o) {
 ## 양질의 equals 메서드 구현 방법
 
 1. `==` 연산자를 사용해 입력이 자기 자신의 참조인지 확인
+   - 단순한 성능 최적화용으로 비교 작업이 복잡할 때 효과가 있음
 2. `instanceof` 연산자로 입력이 올바른 타입인지 확인
 3. 입력을 올바른 타입으로 형변환
 4. 입력 객체와 자기 자신의 대응되는 '핵심' 필드들이 모두 일치하는지 하나씩 검사
 
+- `float`과 `double` 을 제외한 기본 타입 필드는 `==` 로 비교하고, 참조 타입 필드는 `equals` 메서드로, `float` 과 `double` 필드는 각각 `Float.compare(float, float)` 과 `Double.compare(double, double)` 로 비교
+  - `Float.NAN`,` -0.0f`, 특수한 부동소수 값 때문
+  - `Float.equals` 와 `Double.equals` 는 오토박싱을 수반할 수 있어서 성능상 좋지 않음
+- `null` 도 정상 값으로 취급하는 참조 타입 필드는 `Objects.equals(Object, Object)` 로 비교해 `NullPointerException` 을 예방할 것
+- 이전에 나온 `CaseInsensitiveString` 예처럼 비교하기 아주 복잡한 필드를 가진 클래스의 경우에는 그 필드의 표준형(canonical form)을 저장해둔 후 표준형끼리 비교하는 것이 경제적임
+- 어떤 필드를 먼저 비교하는지가 `equals` 의 성능을 좌우할 수 있음
+  - 최상의 성능을 원한다면 다를 가능성이 더 크거나 비교하는 비용이 싼 필드를 먼저 비교할 것
+    - 동기화용 락(lock) 필드 같이 객체의 논리적 상태와 관련 없는 필드는 비교하면 안됨
+
 - `equals` 를 다 구현했다면 '대칭성', '추이성', '일관성' 을 확인해볼 것
+
+```java
+public final class PhoneNumber {
+    private final short areaCode, prefix, lineNum;
+
+    public PhoneNumber(int areaCode, int prefix, int lineNum) {
+        this.areaCode = rangeCheck(areaCode, 999, "지역코드");
+        this.prefix = rangeCheck(prefix, 999, "프리픽스");
+        this.lineNum = rangeCheck(lineNum, 999, "가입자 번호");
+    }
+
+    private static short rangeCheck(int val, int max, String arg) {
+        if (val < 0 || val > max)
+            throw new IllegalArgumentException(arg + ": " + val);
+        return (short) val;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof PhoneNumber))
+            return false;
+        PhoneNumber pn = (PhoneNumber) o;
+        return pn.lineNum == lineNum && pn.prefix == prefix && pn.areaCode == areaCode;
+    }
+    ... // 나머지 코드는 생략
+}
+```
+
+### 주의사항
+
+- **`equals` 를 재정의할 땐 `hashCode` 도 반드시 재정의할 것 (아이템 11)**
+
+- 너무 복잡하게 해결하려하지 말 것
+
+  - 필드들의 동치성만 검사해도 `equals` 규약을 어렵지 않게 지킬 수 있음
+
+- `Object` 외의 타입을 매개변수로 받는 `equals` 메서드는 선언하지 말 것
+
+  - ```java
+    // 잘못된 예 - 입력 타입은 반드시 Object여야 한다!
+    public boolean equals(MyClass o) {
+        ...
+    }
+    ```
+
+- `equals` 를 테스트할 때 'AutoValue' 프레임워크를 활요하면 좋음
 
 ## 정리
 
