@@ -1,4 +1,4 @@
-# equals를 재정의하려거든 hashCode도 재정의하라
+# 아이템 11: equals를 재정의하려거든 hashCode도 재정의하라
 
 - **`equals` 를 재정의한 클래스 모두에서 `hashCode` 도 재정의해야 함**
   - 그렇지 않으면 `hashCode` 일반 규약을 어기게 되어 `HashMap` 이나 `HashSet` 같은 컬렉션의 원소로 사용할 때 문제가 생김
