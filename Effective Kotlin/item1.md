@@ -132,6 +132,7 @@ var names by Delegates.observable(listOf<String>()) { _, old, new ->
 names += "Fabio" // Names changed from [] to [Fabio]
 names += "Bill" // Names changed from [Fabio] to [Fabio, Bill]
 
+
 ## 변경 가능 지점 노출하지 말기
 
 - 상태를 나타내는 mutable 객체를 외부에 노출하는 것은 굉장히 위험함
